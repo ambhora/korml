@@ -42,6 +42,8 @@ theme:
 
 extra_css:
   - assets/stylesheets/colors.css
+  - assets/stylesheets/style.css
+
 
 markdown_extensions:
   - admonition
