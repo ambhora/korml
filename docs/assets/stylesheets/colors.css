@@ -1,0 +1,30 @@
+/* --------------------------------------------------------------------------------------------------
+ * SPDX-License-Identifier: Apache-2.0
+ * -------------------------------------------------------------------------------------------------- */
+
+:root {
+  /* KORML documentation palette */
+  --korml-primary-color: #3b97c4;
+  --korml-secondary-color: #97c43b;
+  --korml-tertiary-color: #c43b97;
+
+  /* MkDocs Material theme colors */
+  --md-primary-fg-color: #3b97c4;
+  --md-primary-fg-color--light: #6bb2d4;
+  --md-primary-fg-color--dark: #2f789d;
+  --md-accent-fg-color: #97c43b;
+  --md-accent-fg-color--transparent: #97c43b1a;
+}
+
+/* Keep a named tertiary color available for future custom blocks/components. */
+.korml-tertiary {
+  color: var(--korml-tertiary-color);
+}
+
+.korml-tertiary-border {
+  border-color: var(--korml-tertiary-color);
+}
+
+.korml-tertiary-background {
+  background-color: #c43b971a;
+}

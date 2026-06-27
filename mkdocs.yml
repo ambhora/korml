@@ -1,0 +1,61 @@
+# --------------------------------------------------------------------------------------------------
+# SPDX-License-Identifier: Apache-2.0
+# --------------------------------------------------------------------------------------------------
+site_name: Korml Language Specification
+site_description: Language specification for Korml, separate from implementation and Python API docs.
+site_url: "https://ambhora.github.io/korml"
+docs_dir: docs
+
+watch:
+  - docs
+
+nav:
+  - Home: index.md
+  - Reference:
+      - Overview: reference/index.md
+      - Grammar Reference: reference/grammar.md
+      - Lexical Structure: reference/lexical-structure.md
+      - Document Model: reference/document-model.md
+  - Tutorial:
+      - Tutorial: tutorial/index.md
+  - How-to:
+      - How-to: how-to/index.md
+  - Explanation:
+      - Overview: explanation/index.md
+      - Design Goals: explanation/design-goals.md
+      - Round-trip Fidelity: explanation/round-trip-fidelity.md
+      - Language Pipeline: explanation/language-pipeline.md
+
+# Keep the language specification site independent of Python API generation.
+# In particular, do not enable mkdocstrings here; API docs should live in a separate site.
+plugins:
+  - search
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+
+extra_css:
+  - assets/stylesheets/colors.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      use_pygments: true
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
