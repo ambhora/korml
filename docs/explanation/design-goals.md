@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 # Design Goals
 
 Korml is a reduced markup language.
-It keeps the parts of YAML-style documents that are useful for simple structured configuration and removes features that make parsing, tooling, and round-tripping harder.
+It keeps the JSON-shaped subset of YAML that is useful for simple structured configuration and removes features that make parsing, tooling, and round-tripping harder.
 
 ## Small core language
 
@@ -15,11 +15,12 @@ The core language should be small:
 - sequences,
 - scalars,
 - comments,
-- document boundaries,
+- version-specific document envelopes,
 - flow style for compact values,
 - block scalars when long text is needed.
 
-The language should not require anchors, aliases, tags, complex keys, or implicit scalar typing in the core grammar.
+The core body syntax should remain familiar to users of small YAML files and JSON-like flow values.
+The language should not require anchors, aliases, tags, complex keys, merge keys, or implicit scalar typing in the core grammar.
 
 ## Clear separation of concerns
 

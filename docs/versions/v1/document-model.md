@@ -2,15 +2,18 @@
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# Document Model
+# Korml v1 Document Model
 
-The Korml document model is the abstract data model represented by parsed source text.
+The Korml v1 document model is the abstract data model represented by parsed source text.
 It is smaller than the concrete syntax tree.
 It does not contain comments, whitespace, indentation, or exact source spelling.
+For the shared v0/v1 body grammar, the document-model shape is the familiar mapping/sequence/scalar tree.
 
 ## A complete example
 
-A Korml source text is a stream. The stream starts with a language version and then contains one or more documents. Each document has a root value, and that value is usually a mapping for structured configuration-like data.
+A v1 source text is a stream.
+The stream starts with a language version and then contains one or more documents.
+Each document has an optional root value, and that value is usually a mapping for structured configuration-like data.
 
 ```korml
 %!korml version 1.0
@@ -28,7 +31,7 @@ steps:
     command: execute
 tags: [tutorial, document-model]
 description: |
-  This is a complete Korml document.
+  This is a complete Korml v1 document.
   Comments, spacing, and scalar spelling belong to the CST.
 ...
 ```
@@ -58,14 +61,15 @@ Stream
             ├── tags: Sequence
             │   ├── Scalar("tutorial")
             │   └── Scalar("document-model")
-            └── description: Scalar("This is a complete Korml document...\n")
+            └── description: Scalar("This is a complete Korml v1 document...\n")
 ```
 
 This example also shows the main distinction used throughout the specification: the document model contains values, while the concrete syntax tree contains the source details needed to reproduce the text.
+The same mapping/sequence/scalar model is used for v0-style body syntax and JSON-style flow syntax.
 
 ## Stream
 
-A source text represents a `Stream`.
+A v1 source text represents a `Stream`.
 A stream contains one or more documents and stream metadata such as the version directive.
 
 ```text

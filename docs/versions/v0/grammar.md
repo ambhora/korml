@@ -2,18 +2,16 @@
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# Grammar Reference
+# Korml v0 Grammar
 
-This page defines the Korml grammar at the token level.
-The grammar is intentionally written over lexer tokens rather than directly over characters.
-This keeps the parser specification independent of the exact scanner implementation while still supporting a full-fidelity concrete syntax tree.
+This page defines the v0 grammar at the token level.
+v0 is the unversioned, YAML-compatible, single-document language.
+The node grammar is the same as v1; the stream/document-boundary wrapper is not present.
 
 !!! note "Status"
-    This is a language-specification draft for Korml v1. It captures the current intended shape of the language: mappings, sequences, scalars, comments, document boundaries, flow forms, and round-trip preserving trivia.
+    Korml v0 is intended as the YAML-compatible minimal source format: one document, no version header, and no support for multiple documents.
 
 ## Notation
-
-The grammar uses the following notation:
 
 | Form | Meaning |
 | --- | --- |
@@ -28,21 +26,15 @@ The grammar uses the following notation:
 Whitespace, comments, and blank lines are trivia from the point of view of the semantic document model.
 They are nevertheless retained by the concrete syntax tree.
 
-Unless otherwise stated, grammar examples in this reference are document-body fragments. A complete Korml source stream starts with `%!korml version 1.0` and an explicit document start marker `---`.
-
 ## Token classes
 
-The parser is defined over these token classes:
+The v0 parser is defined over these token classes:
 
 ```ebnf
 WHITESPACE
 COMMENT
 NEWLINE
 EOF
-
-VERSION_DIRECTIVE
-DOC_START
-DOC_END
 
 INDENT
 DEDENT
@@ -66,39 +58,33 @@ FOLDED_BLOCK_SCALAR
 `INDENT` and `DEDENT` are abstract layout tokens.
 An implementation may either emit them explicitly or derive the same structure from retained whitespace tokens.
 
-## Stream
+v0 does not use `VERSION_DIRECTIVE`, `DOC_START`, or `DOC_END` tokens.
+A source containing a version directive or document boundary marker is not a valid v0 source.
 
-A Korml source text represents a stream of one or more documents prefixed by a version directive.
+## Source
+
+A v0 source text represents exactly one implicit document.
+The document may be empty.
 
 ```ebnf
-Stream ::= VersionDirective Trivia* DocumentSequence EOF
-
-VersionDirective ::= VERSION_DIRECTIVE
-
-DocumentSequence ::= Document+
+Source ::= Trivia* Node? Trivia* EOF
 ```
 
-The version directive is stream metadata.
-It is not a mapping entry, sequence item, or scalar value in the document model.
-For Korml v1, the source-level version header is written as:
+There is no version directive and no explicit document start marker.
+The version is implicit: a source parsed as v0 is a Korml v0 document.
+
+Examples of complete v0 sources:
 
 ```korml
-%!korml version 1.0
+name: example
+enabled: true
 ```
 
-## Document
-
-```ebnf
-Document ::= Trivia* ExplicitDocument Trivia*
-
-ExplicitDocument ::= DOC_START Trivia* Node? Trivia* DOC_END?
+```korml
+- alpha
+- beta
+- gamma
 ```
-
-A document may be empty.
-An empty document has no root node. A valid source stream starts with a version directive and an explicit document start marker.
-
-`DOC_START` and `DOC_END` are syntactic document-boundary markers.
-They are preserved by the concrete syntax tree.
 
 ## Nodes
 
@@ -118,7 +104,7 @@ Empty ::= ε
 ```
 
 A node is the syntactic form that represents a document-model value.
-The document model has only mappings, sequences, scalars, and empty documents.
+The document model has only mappings, sequences, scalars, and the empty document.
 
 ## Block mappings
 
@@ -138,10 +124,10 @@ InlineValue ::= Trivia* (FlowNode | Scalar)
 NestedBlockValue ::= Trivia* NEWLINE INDENT BlockNode DEDENT
 ```
 
-Only simple scalar keys are part of Korml v1.
+Only simple scalar keys are part of Korml v0.
 Complex keys are intentionally excluded.
 
-Examples:
+Example:
 
 ```korml
 title: Example

@@ -33,7 +33,7 @@ The lexer converts source text into tokens such as:
 - comment tokens,
 - whitespace tokens,
 - punctuation tokens,
-- document boundary tokens,
+- version-envelope tokens where the version supports them,
 - layout information.
 
 Tokens are primarily an internal layer of the language implementation.

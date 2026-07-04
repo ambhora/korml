@@ -2,15 +2,16 @@
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# Lexical Structure
+# Korml v1 Lexical Structure
 
-This page describes how Korml source text is split into tokens before parsing.
+This page describes how Korml v1 source text is split into tokens before parsing.
 The parser consumes tokens; the concrete syntax tree keeps tokens and trivia so that source text can be emitted without losing comments, spacing, indentation, or scalar spelling.
 
 ## Characters and lines
 
-A Korml document is a Unicode text document processed as a sequence of lines.
-Line boundaries are significant for block mappings, block sequences, comments, and block scalars.
+A v1 stream is a Unicode text document processed as a sequence of lines.
+Line boundaries are significant for the version directive, document boundaries, block mappings, block sequences, comments, and block scalars.
+The document body keeps the familiar restricted mapping/sequence/scalar forms used by v0 while the source envelope is Korml-specific.
 
 The lexer distinguishes:
 
@@ -45,24 +46,6 @@ name: example  # trailing comment
 Comments are not document-model values, but they are part of the concrete syntax tree.
 A round-trip preserving implementation must retain them.
 
-## Document boundaries
-
-Korml supports explicit document boundaries:
-
-```korml
-%!korml version 1.0
----
-name: first
-...
----
-name: second
-...
-```
-
-`DOC_START` marks the beginning of an explicit document.
-`DOC_END` marks the end of an explicit document.
-A complete source stream starts with a version directive followed by an explicit document start marker.
-
 ## Version directive
 
 A version directive belongs to the stream prefix.
@@ -81,6 +64,24 @@ For Korml v1, a source stream starts with:
 ```
 
 The parser should keep the version directive in the concrete syntax tree and expose it as stream metadata.
+
+## Document boundaries
+
+Korml v1 supports explicit document boundaries:
+
+```korml
+%!korml version 1.0
+---
+name: first
+...
+---
+name: second
+...
+```
+
+`DOC_START` marks the beginning of an explicit document.
+`DOC_END` marks the end of an explicit document.
+A complete v1 source stream starts with a version directive followed by an explicit document start marker.
 
 ## Mapping and sequence punctuation
 
@@ -103,7 +104,7 @@ The flow grammar uses:
 
 ## Scalar forms
 
-Korml has five scalar token forms:
+Korml v1 has five scalar token forms:
 
 | Token | Purpose |
 | --- | --- |

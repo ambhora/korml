@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # --------------------------------------------------------------------------------------------------
 site_name: Korml Language Specification
-site_description: Language specification for Korml, separate from implementation and Python API docs.
+site_description: Versioned language specification for Korml, separate from implementation and Python API docs.
 site_url: "https://ambhora.github.io/korml"
 docs_dir: docs
 
@@ -11,18 +11,29 @@ watch:
 
 nav:
   - Home: index.md
-  - Reference:
-      - Overview: reference/index.md
-      - Grammar Reference: reference/grammar.md
-      - Lexical Structure: reference/lexical-structure.md
-      - Document Model: reference/document-model.md
-  - Tutorial:
-      - Tutorial: tutorial/index.md
+  - Versions:
+      - Overview: versions/index.md
+      - v0:
+          - Overview: versions/v0/index.md
+          - Grammar: versions/v0/grammar.md
+          - YAML Compatibility: versions/v0/yaml-compatibility.md
+          - Lexical Structure: versions/v0/lexical-structure.md
+          - Document Model: versions/v0/document-model.md
+          - Examples: versions/v0/examples.md
+      - v1:
+          - Overview: versions/v1/index.md
+          - Grammar: versions/v1/grammar.md
+          - Stream Format: versions/v1/stream-format.md
+          - Lexical Structure: versions/v1/lexical-structure.md
+          - Document Model: versions/v1/document-model.md
+          - Examples: versions/v1/examples.md
   - How-to:
-      - How-to: how-to/index.md
+      - Overview: how-to/index.md
+      - Choosing a Version: how-to/choosing-a-version.md
   - Explanation:
       - Overview: explanation/index.md
       - Design Goals: explanation/design-goals.md
+      - Versioning Model: explanation/versioning-model.md
       - Round-trip Fidelity: explanation/round-trip-fidelity.md
       - Language Pipeline: explanation/language-pipeline.md
 
@@ -37,13 +48,13 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
+    - navigation.sections
     - toc.follow
     - content.code.copy
 
 extra_css:
   - assets/stylesheets/colors.css
   - assets/stylesheets/style.css
-
 
 markdown_extensions:
   - admonition
