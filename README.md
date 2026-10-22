@@ -14,7 +14,7 @@ The specification is organized by language version:
 
 v0 and v1 share the same document body grammar.
 v0 is the YAML-compatible complete source form: one implicit document, no version directive, and no document stream.
-v1 adds the Korml stream wrapper: `%!korml version 1.0`, explicit document starts, optional document ends, and multiple documents.
+v1 adds the Korml stream wrapper: `%!korml version 1.0`, explicit document starts and ends, and multiple documents.
 
 ## Build locally
 

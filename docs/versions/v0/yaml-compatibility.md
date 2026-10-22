@@ -48,6 +48,8 @@ The compatible subset intentionally excludes features that make parsing, editing
 - complex mapping keys,
 - merge keys,
 - arbitrary implicit scalar typing,
+- empty values, such as `key:` with nothing after it, which YAML reads as null,
+- block scalar chomping indicators (`|-`, `|+`, `>-`, `>+`),
 - YAML directives,
 - document-start and document-end markers,
 - multiple documents in one source text.

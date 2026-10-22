@@ -9,10 +9,10 @@ The document body language is shared, but the top-level source form is not.
 
 ## Version summary
 
-| Version | Version directive | Multiple documents | Explicit document start | YAML-compatible as a complete source? | Root value |
+| Version | Version directive | Multiple documents | Document start `---` and end `...` | YAML-compatible as a complete source? | Root value |
 | --- | --- | --- | --- | --- | --- |
 | [v0](v0/index.md) | not supported | not supported | not supported | yes, for the restricted single-document subset | optional single root node |
-| [v1](v1/index.md) | required | supported | required for each document | no; the source is a Korml stream | optional root node per document |
+| [v1](v1/index.md) | required | supported | both required for each document | no; the source is a Korml stream | optional root node per document |
 
 ## Relationship between v0 and v1
 

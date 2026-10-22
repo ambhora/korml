@@ -21,13 +21,12 @@ This keeps the parser specification independent of the exact scanner implementat
 | `A+` | one or more occurrences of `A`. |
 | `A \| B` | either `A` or `B`. |
 | `TOKEN` | a lexer token. |
-| `ε` | an empty production. |
 
 Whitespace, comments, and blank lines are trivia from the point of view of the semantic document model.
 They are nevertheless retained by the concrete syntax tree.
 
 Unless otherwise stated, grammar examples in this reference are document-body fragments.
-A complete Korml v1 source stream starts with `%!korml version 1.0` and an explicit document start marker `---`.
+A complete Korml v1 source stream starts with `%!korml version 1.0`, and each of its documents is enclosed by a document start marker `---` and a document end marker `...`.
 
 ## Document body grammar
 
@@ -119,13 +118,14 @@ For Korml v1, the source-level version header is written as:
 ## Documents
 
 ```ebnf
-ExplicitDocument ::= DOC_START Trivia* Node? Trivia* DOC_END?
+ExplicitDocument ::= DOC_START Trivia* Node? Trivia* DOC_END Trivia*
 ```
 
 A document may be empty.
 An empty document has no root node.
-Each v1 document starts with `DOC_START`.
-A `DOC_END` marker may be used to close a document explicitly.
+Each v1 document starts with `DOC_START` and ends with `DOC_END`.
+The end marker is required for every document, including the last one in the stream: a document that reaches the next `---` or the end of the source without its `...` is not valid.
+Trivia after `DOC_END`, such as the line break that ends the `...` line or a comment between documents, belongs to the stream and has no document-model value.
 
 `DOC_START` and `DOC_END` are syntactic document-boundary markers.
 They are preserved by the concrete syntax tree.
@@ -136,32 +136,30 @@ They are preserved by the concrete syntax tree.
 Node ::= BlockNode
        | FlowNode
        | Scalar
-       | Empty
 
 BlockNode ::= BlockMapping
             | BlockSequence
 
 FlowNode ::= FlowMapping
            | FlowSequence
-
-Empty ::= ε
 ```
 
 A node is the syntactic form that represents a document-model value.
 The document model has only mappings, sequences, scalars, and empty documents.
+An empty document is a document with no node between its markers.
+There is no empty node anywhere else: every mapping entry, sequence entry and flow entry has a value.
 
 ## Block mappings
 
 ```ebnf
 BlockMapping ::= MappingEntry+
 
-MappingEntry ::= SimpleKey COLON MappingValue?
+MappingEntry ::= SimpleKey COLON MappingValue
 
 SimpleKey ::= Scalar
 
 MappingValue ::= InlineValue
                | NestedBlockValue
-               | Empty
 
 InlineValue ::= Trivia* (FlowNode | Scalar)
 
@@ -170,6 +168,9 @@ NestedBlockValue ::= Trivia* NEWLINE INDENT BlockNode DEDENT
 
 Only simple scalar keys are part of Korml v1.
 Complex keys are intentionally excluded.
+
+Every mapping entry has a value: a key followed by nothing, as in `key:`, is not valid.
+An empty string is written `""`, an empty sequence `[]` and an empty mapping `{}`.
 
 Examples:
 
@@ -186,12 +187,13 @@ nested:
 ```ebnf
 BlockSequence ::= SequenceEntry+
 
-SequenceEntry ::= DASH_ITEM SequenceValue?
+SequenceEntry ::= DASH_ITEM SequenceValue
 
 SequenceValue ::= InlineValue
                 | NestedBlockValue
-                | Empty
 ```
+
+Every sequence entry has a value: a dash followed by nothing is not valid.
 
 Examples:
 
@@ -244,7 +246,6 @@ Example:
 FlowValue ::= FlowMapping
             | FlowSequence
             | FlowScalar
-            | Empty
 
 FlowScalar ::= SQ_SCALAR
              | DQ_SCALAR
@@ -252,6 +253,9 @@ FlowScalar ::= SQ_SCALAR
 ```
 
 Block scalars are block constructs and are not flow scalar forms.
+
+Every flow entry has a value, so `{ key: }`, `[alpha, , gamma]` and a trailing separator as in `[alpha, beta, ]` are not valid.
+The empty collections `[]` and `{}` are values and remain valid.
 
 ## Scalars
 
@@ -262,6 +266,9 @@ Scalar ::= SQ_SCALAR
          | LITERAL_BLOCK_SCALAR
          | FOLDED_BLOCK_SCALAR
 ```
+
+Korml has no block-scalar chomping indicators: `|-`, `|+`, `>-` and `>+` are not valid.
+How a block scalar's final line breaks belong to its value is fixed by the [lexical structure](lexical-structure.md#block-scalars).
 
 At the language level, scalar values are text.
 This is also how Korml keeps YAML/JSON-shaped syntax separate from application typing.

@@ -13,7 +13,7 @@ A v1 source starts with a Korml version directive:
 %!korml version 1.0
 ```
 
-Each document then starts with an explicit document boundary:
+Each document is then enclosed by explicit document boundaries, `---` before it and `...` after it:
 
 ```korml
 ---
@@ -44,7 +44,7 @@ v1 is different:
 
 - `%!korml version 1.0` is Korml source metadata;
 - `---` starts each Korml stream document;
-- `...` may end a document explicitly;
+- `...` ends each Korml stream document, including the last one;
 - one source may contain more than one document.
 
 Therefore, a complete v1 source should be treated as a Korml stream, not as the YAML-compatible single-document subset.

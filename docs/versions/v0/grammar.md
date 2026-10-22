@@ -21,7 +21,6 @@ The node grammar is the same as v1; the stream/document-boundary wrapper is not 
 | `A+` | one or more occurrences of `A`. |
 | `A \| B` | either `A` or `B`. |
 | `TOKEN` | a lexer token. |
-| `ε` | an empty production. |
 
 Whitespace, comments, and blank lines are trivia from the point of view of the semantic document model.
 They are nevertheless retained by the concrete syntax tree.
@@ -92,32 +91,30 @@ enabled: true
 Node ::= BlockNode
        | FlowNode
        | Scalar
-       | Empty
 
 BlockNode ::= BlockMapping
             | BlockSequence
 
 FlowNode ::= FlowMapping
            | FlowSequence
-
-Empty ::= ε
 ```
 
 A node is the syntactic form that represents a document-model value.
 The document model has only mappings, sequences, scalars, and the empty document.
+An empty document is a source with no node at all.
+There is no empty node anywhere else: every mapping entry, sequence entry and flow entry has a value.
 
 ## Block mappings
 
 ```ebnf
 BlockMapping ::= MappingEntry+
 
-MappingEntry ::= SimpleKey COLON MappingValue?
+MappingEntry ::= SimpleKey COLON MappingValue
 
 SimpleKey ::= Scalar
 
 MappingValue ::= InlineValue
                | NestedBlockValue
-               | Empty
 
 InlineValue ::= Trivia* (FlowNode | Scalar)
 
@@ -126,6 +123,9 @@ NestedBlockValue ::= Trivia* NEWLINE INDENT BlockNode DEDENT
 
 Only simple scalar keys are part of Korml v0.
 Complex keys are intentionally excluded.
+
+Every mapping entry has a value: a key followed by nothing, as in `key:`, is not valid.
+An empty string is written `""`, an empty sequence `[]` and an empty mapping `{}`.
 
 Example:
 
@@ -142,12 +142,13 @@ nested:
 ```ebnf
 BlockSequence ::= SequenceEntry+
 
-SequenceEntry ::= DASH_ITEM SequenceValue?
+SequenceEntry ::= DASH_ITEM SequenceValue
 
 SequenceValue ::= InlineValue
                 | NestedBlockValue
-                | Empty
 ```
+
+Every sequence entry has a value: a dash followed by nothing is not valid.
 
 Examples:
 
@@ -200,7 +201,6 @@ Example:
 FlowValue ::= FlowMapping
             | FlowSequence
             | FlowScalar
-            | Empty
 
 FlowScalar ::= SQ_SCALAR
              | DQ_SCALAR
@@ -208,6 +208,9 @@ FlowScalar ::= SQ_SCALAR
 ```
 
 Block scalars are block constructs and are not flow scalar forms.
+
+Every flow entry has a value, so `{ key: }`, `[alpha, , gamma]` and a trailing separator as in `[alpha, beta, ]` are not valid.
+The empty collections `[]` and `{}` are values and remain valid.
 
 ## Scalars
 
@@ -218,6 +221,9 @@ Scalar ::= SQ_SCALAR
          | LITERAL_BLOCK_SCALAR
          | FOLDED_BLOCK_SCALAR
 ```
+
+Korml has no block-scalar chomping indicators: `|-`, `|+`, `>-` and `>+` are not valid.
+How a block scalar's final line breaks belong to its value is fixed by the [lexical structure](lexical-structure.md#block-scalars).
 
 At the language level, scalar values are text.
 Boolean, integer, floating-point, date, and application-specific interpretation belong to a schema or decoding layer, not to the core grammar.

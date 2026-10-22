@@ -20,7 +20,7 @@ v1 document bodies use the same body grammar as [v0](../v0/index.md): mappings, 
 However, the compatibility boundary is different:
 
 - a complete v0 source is the YAML-compatible single-document subset;
-- a complete v1 source is a Korml stream because it requires `%!korml version 1.0` and explicit document starts.
+- a complete v1 source is a Korml stream because it requires `%!korml version 1.0` and explicit document starts and ends.
 
 Use v1 when a source needs multiple documents, explicit Korml version metadata, or future stream-level features.
 

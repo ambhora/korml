@@ -80,7 +80,7 @@ name: second
 ```
 
 `DOC_START` marks the beginning of an explicit document.
-`DOC_END` marks the end of an explicit document.
+`DOC_END` marks the end of an explicit document and is required for every document.
 A complete v1 source stream starts with a version directive followed by an explicit document start marker.
 
 ## Mapping and sequence punctuation
@@ -157,3 +157,18 @@ folded: >
 
 Block scalar source spelling is part of the concrete syntax tree.
 The semantic scalar value is text.
+
+A block scalar starts with `|` for a literal block scalar or `>` for a folded one.
+Korml has no chomping indicators: `|-`, `|+`, `>-` and `>+` are not valid.
+Instead, the final line breaks of every block scalar follow one fixed rule: the value keeps the line break that ends its last content line, and trailing empty lines are not part of the value.
+This is the default (clip) behaviour of YAML, so a block scalar has the same value under both.
+
+```korml
+literal: |
+  first line
+  second line
+
+next: value
+```
+
+The value of `literal` is `"first line\nsecond line\n"`; the empty line before `next` is not part of it.

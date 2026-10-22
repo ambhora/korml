@@ -27,7 +27,7 @@ The lack of a required version header is part of that compatibility story: a nor
 ## v1: versioned document stream
 
 v1 adds a Korml stream wrapper.
-A complete v1 source starts with a version directive, and each document starts with an explicit document boundary.
+A complete v1 source starts with a version directive, and each document is enclosed by explicit `---` and `...` boundaries.
 
 ```korml
 %!korml version 1.0
